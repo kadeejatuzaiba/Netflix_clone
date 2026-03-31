@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, si
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { exp } from "firebase/firestore/pipelines";
 import { toast } from "react-toastify";
+  import { setDoc, doc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 
 const firebaseConfig = {
@@ -24,12 +25,13 @@ const signup=async (name,email,password)=>{
     try {
     const res= await createUserWithEmailAndPassword(auth,email,password)
     const user=res.user;
-    await addDoc(collection(db,'User'),{
-        uid:user.uid,
-        name,
-        authProvider:'local',
-        email,
-    })
+    await setDoc(doc(db, "User", user.uid), {
+  uid: user.uid,
+  name,
+  email,
+  watchlist: []
+});
+
     } catch (error) {
         console.log(error)
         toast.error(error.code.split('/')[1].split('-').join(' '))

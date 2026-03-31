@@ -23,17 +23,33 @@ const handleWheel=(event)=>{
   cardsRef.current.scrollLeft+=event.deltaY
 }
 
-useEffect(()=>{
+// useEffect(()=>{
 
   
-fetch(`https://api.themoviedb.org/3/movie/${category?category:'now_playing'}`, options)
-  .then(res => res.json())
-  .then(res => setApiData(res.results))
-  .catch(err => console.error(err));
+// fetch(`https://api.themoviedb.org/3/movie/${category?category:'now_playing'}`, options)
+//   .then(res => res.json())
+//   .then(res => setApiData(res.results))
+//   .catch(err => console.error(err));
 
 
-  cardsRef.current.addEventListener('wheel',handleWheel)
-},[])
+//   cardsRef.current.addEventListener('wheel',handleWheel)
+// },[])
+
+useEffect(() => {
+
+  fetch(`https://api.themoviedb.org/3/movie/${category ? category : 'now_playing'}`, options)
+    .then(res => res.json())
+    .then(res => setApiData(res.results))
+    .catch(err => console.error(err));
+
+  const currentRef = cardsRef.current
+  currentRef.addEventListener('wheel', handleWheel)
+
+  return () => {
+    currentRef.removeEventListener('wheel', handleWheel)
+  }
+
+}, [])
 
   return (
     <div className='title-cards'>

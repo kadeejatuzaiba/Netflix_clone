@@ -4,6 +4,11 @@ import { Routes,Route, useNavigate } from 'react-router-dom'
 import Home from './Pages/Home/Home'
 import Login from './Pages/Login/Login'
 import Player from './Pages/Player/Player'
+import MyList from './Pages/MyList/MyList'
+import New from './Pages/NavLinks/new'
+import Tv from './Pages/NavLinks/tv'
+import Movie from './Pages/NavLinks/Movie'
+
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './Firebase'
 
@@ -35,6 +40,10 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/player/:id' element={<Player/>}/>
+        <Route path="/tv" element={<Tv />} />
+<Route path="/movies" element={<Movie />} />
+<Route path="/new" element={<New />} />
+        <Route path="/my-list" element={<MyList />} />
       </Routes>
       
     </div>
