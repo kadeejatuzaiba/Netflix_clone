@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
-import { Routes,Route, useNavigate } from 'react-router-dom'
+
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
 
 import Home from './Pages/Home/Home'
 import Login from './Pages/Login/Login'
@@ -9,43 +10,60 @@ import New from './Pages/NavLinks/new'
 import Tv from './Pages/NavLinks/tv'
 import Movie from './Pages/NavLinks/Movie'
 
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from './Firebase'
+import ProtectedRoute from './Components/ProtectedRoute'
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
-   const navigate=useNavigate()
-
-  useEffect(()=>{
-
-   
-
-     onAuthStateChanged(auth,async (user)=>{
-      if(user){
-        console.log('Logged In')
-        navigate('/')
-      }else{
-        console.log('Logged Out')
-        navigate('/login')
-      }
-     })
-  },[])
 
   return (
     <div>
       <ToastContainer theme='dark'/>
+
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/player/:id' element={<Player/>}/>
-        <Route path="/tv" element={<Tv />} />
-<Route path="/movies" element={<Movie />} />
-<Route path="/new" element={<New />} />
-        <Route path="/my-list" element={<MyList />} />
-      </Routes>
+
       
+        <Route path="/login" element={<Login />} />
+
+       
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/player/:id" element={
+          <ProtectedRoute>
+            <Player />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/tv" element={
+          <ProtectedRoute>
+            <Tv />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/movies" element={
+          <ProtectedRoute>
+            <Movie />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/new" element={
+          <ProtectedRoute>
+            <New />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/my-list" element={
+          <ProtectedRoute>
+            <MyList />
+          </ProtectedRoute>
+        } />
+
+      </Routes>
     </div>
   )
 }
